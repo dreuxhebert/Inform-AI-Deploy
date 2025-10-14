@@ -14,7 +14,7 @@ app.include_router(ElevateAPIRouts)
 origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://ni-ce-ai-dashboar-demo.vercel.app/"
+    "https://ni-ce-ai-dashboar-demo.vercel.app"
 ]
 
 app.add_middleware(
