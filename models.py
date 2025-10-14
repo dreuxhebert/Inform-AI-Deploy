@@ -4,21 +4,29 @@ from typing import Optional
 from datetime import datetime
 from bson import ObjectId
 
+from pydantic import GetJsonSchemaHandler
+from pydantic.json_schema import JsonSchemaValue
+
+
+
 # ---- Helper to allow Pydantic to work with Mongo ObjectId ----
 class PyObjectId(ObjectId):
+
     @classmethod
     def __get_validators__(cls):
         yield cls.validate
 
     @classmethod
-    def validate(cls, v):
-        if not ObjectId.is_valid(v):
+    def validate(cls, value, info=None):  # Accepts 2 arguments in Pydantic v2
+        if not ObjectId.is_valid(value):
             raise ValueError("Invalid ObjectId")
-        return ObjectId(v)
+        return ObjectId(value)
 
     @classmethod
-    def __modify_schema__(cls, field_schema):
-        field_schema.update(type="string")
+    def __get_pydantic_json_schema__(
+            cls, schema: JsonSchemaValue, handler: GetJsonSchemaHandler
+    ) -> JsonSchemaValue:
+        return {"type": "string"}
 
 
 # ---------------------------
@@ -142,6 +150,26 @@ class Evaluation(BaseModel):
     strengths: Optional[str] = None
     improvements: Optional[str] = None
     reviewed_by_supervisor: bool = False
+
+    class Config:
+        allow_population_by_field_name = True
+        json_encoders = {ObjectId: str}
+
+
+class CallSummary(BaseModel):
+    id: Optional[PyObjectId] = Field(default_factory=PyObjectId, alias="_id")
+    dispatcher_id: Optional[PyObjectId]
+    call_id: Optional[str]
+    duration_seconds: Optional[int]
+    direction: Optional[str]
+    language: Optional[str]
+    model: Optional[str]
+    callType: Optional[str]
+    status: Optional[str]
+    sentiment: Optional[str]
+    transcript: Optional[str]
+    summary: Optional[str]
+    created_at: Optional[datetime] = Field(default_factory=datetime.utcnow)
 
     class Config:
         allow_population_by_field_name = True
