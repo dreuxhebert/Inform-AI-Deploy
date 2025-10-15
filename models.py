@@ -1,7 +1,7 @@
 # models.py
 from pydantic import BaseModel, Field
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, timezone
 from bson import ObjectId
 
 from pydantic import GetJsonSchemaHandler
@@ -158,7 +158,7 @@ class Evaluation(BaseModel):
 
 class CallSummary(BaseModel):
     id: Optional[PyObjectId] = Field(default_factory=PyObjectId, alias="_id")
-    dispatcher_id: Optional[PyObjectId]
+    dispatcher_id: Optional[str]
     call_id: Optional[str]
     duration_seconds: Optional[int]
     direction: Optional[str]
@@ -169,7 +169,7 @@ class CallSummary(BaseModel):
     sentiment: Optional[str]
     transcript: Optional[str]
     summary: Optional[str]
-    created_at: Optional[datetime] = Field(default_factory=datetime.utcnow)
+    created_at: Optional[datetime] = Field(default_factory=lambda : datetime.now(timezone.utc))
 
     class Config:
         allow_population_by_field_name = True

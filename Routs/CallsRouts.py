@@ -1,5 +1,8 @@
+from datetime import datetime
+
 from fastapi import APIRouter
 from models import CallSummary
+from db_connect import db
 from Controllers.CallController import (
     get_all_calls,
     create_call,
@@ -10,10 +13,12 @@ from Controllers.CallController import (
 
 router = APIRouter(prefix="/calls", tags=["Cards"])
 
-@router.post("/")
-def add_call(call: CallSummary):
-    return create_call(call.model_dump(by_alias=True))
-
+@router.post("/createCall")
+def create_call(call_data: CallSummary):
+    call = call_data.model_dump()
+    result = db["calls"].insert_one(call)
+    call["id"] = result.inserted_id
+    return {"Successfully added call"}
 
 @router.get("/", response_model=list[CallSummary])
 def get_calls():
