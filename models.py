@@ -3,10 +3,8 @@ from pydantic import BaseModel, Field
 from typing import Optional
 from datetime import datetime, timezone
 from bson import ObjectId
-
 from pydantic import GetJsonSchemaHandler
 from pydantic.json_schema import JsonSchemaValue
-
 
 
 # ---- Helper to allow Pydantic to work with Mongo ObjectId ----
@@ -156,6 +154,9 @@ class Evaluation(BaseModel):
         json_encoders = {ObjectId: str}
 
 
+# ---------------------------
+# Call Summary according to Mongo DB
+# ---------------------------
 class CallSummary(BaseModel):
     id: Optional[PyObjectId] = Field(default_factory=PyObjectId, alias="_id")
     dispatcher_id: Optional[str]

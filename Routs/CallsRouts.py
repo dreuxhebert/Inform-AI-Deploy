@@ -1,8 +1,5 @@
-from datetime import datetime
-
 from fastapi import APIRouter
 from models import CallSummary
-from db_connect import db
 from Controllers.CallController import (
     get_all_calls,
     create_call,
@@ -13,34 +10,36 @@ from Controllers.CallController import (
 
 router = APIRouter(prefix="/calls", tags=["Cards"])
 
+
+#Adds uploaded call to the database
 @router.post("/createCall")
 def create_call(call_data: CallSummary):
-    call = call_data.model_dump()
-    result = db["calls"].insert_one(call)
-    call["id"] = result.inserted_id
-    return {"Successfully added call"}
+    return create_call(call_data)
 
+
+
+# Fetches all the calls from the database
 @router.get("/", response_model=list[CallSummary])
 def get_calls():
     return [serialize_call(c) for c in get_all_calls()]
 
+
+
+# Gives data by their type
+# example:{
+#     fire : 3
+#     shooting : 6
+# }
 @router.get("/byType")
 def get_calls_by_type():
     return get_by_type()
 
+
+# Gives data by their type
+# example:{
+#     10/16/25 : 3
+#     10/15/25 : 6
+# }
 @router.get("/byDate")
 def get_calls_by_date():
     return get_by_date()
-
-
-# @router.get("/{card_id}")
-# def get_card(card_id: str):
-#     return get_card_by_id(card_id)
-#
-# @router.put("/{card_id}")
-# def modify_card(card_id: str, card: Card):
-#     return update_card(card_id, card.dict())
-#
-# @router.delete("/{card_id}")
-# def remove_card(card_id: str):
-#     return delete_card(card_id)

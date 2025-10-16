@@ -15,6 +15,8 @@ api_url = os.getenv("ELEVATEAI_BASE_URL")
 class FileRequest(BaseModel):
     download_uri: str
 
+
+# This generates transcriptions with the download url given in the body
 def get_interaction_id_download_url(body: FileRequest):
     declare_url = f"{api_url}/interactions"
     payload = {
@@ -41,6 +43,8 @@ def get_interaction_id_download_url(body: FileRequest):
         raise HTTPException(status_code=500, detail="No interaction ID returned")
     return {"interaction_id": interaction_id}
 
+
+# Fetches interaction id using elevate api.
 def get_interaction_id():
     declare_url = f"{api_url}/interactions"
     payload = {
@@ -67,6 +71,7 @@ def get_interaction_id():
     return {"interaction_id": interaction_id}
 
 
+# Generates transcriptions using the download url
 def get_transcription_url(body: FileRequest):
     transaction_id = get_interaction_id_download_url(body)["interaction_id"]
     if not transaction_id:
@@ -100,6 +105,8 @@ def get_transcription_url(body: FileRequest):
 
     return {"transaction_id": transaction_id, "transcript": transcript}
 
+
+# Generates transcriptions
 def get_transcription(transaction_id: str):
     # Step 2: Poll for processing status
     max_tries = 80
@@ -130,6 +137,7 @@ def get_transcription(transaction_id: str):
     return {"transaction_id": transaction_id, "transcript": transcript}
 
 
+# Generates general summary for the transcriptions
 def get_general_summary(interaction_id: str):
     headers = {'X-API-Token': api_token, 'Accept': 'gzip, deflate'}
     summary_resp = requests.get(
@@ -141,6 +149,8 @@ def get_general_summary(interaction_id: str):
     summary_resp.raise_for_status()
     return summary_resp.json()
 
+
+# Generates CS summary for the transcriptions
 def get_cx_summary(interaction_id: str):
     payload = ''
     headers = {
@@ -159,6 +169,8 @@ def get_cx_summary(interaction_id: str):
     output = summary.json()
     return output
 
+
+# Fetches the status of the uploaded call
 def get_status(interaction_id: str):
     try:
         headers = {
@@ -175,6 +187,8 @@ def get_status(interaction_id: str):
     except requests.RequestException as e:
         raise HTTPException(status_code=502, detail=f"Status request error: {e}")
 
+
+# Upload calls from the front end
 async def upload_audio(
     audio_file: UploadFile = File(...),
     dispatcher: str = Form(""),
