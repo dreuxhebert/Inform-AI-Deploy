@@ -107,10 +107,10 @@ The backend is deployed on [Render](https://render.com), which automatically bui
   uvicorn main:app --host 0.0.0.0 --port 8001
 
 ## Environment variable structure
-ELEVATEAI_API_TOKEN = Elevate AI api token.
-ELEVATEAI_BASE_URL = Elevate AI base url (https://api.elevateai.com/v1).
-HUGGINGFACE_TOKEN = hugging face api token.
-MONGODB_URI = mongo db connection url.
-ORIGINS = allowed origins for resource sharing (CORS) (link1, link2, link3).
+- **ELEVATEAI_API_TOKEN** – Elevate AI API token  
+- **ELEVATEAI_BASE_URL** – Elevate AI base URL (`https://api.elevateai.com/v1`)  
+- **HUGGINGFACE_TOKEN** – Hugging Face API token  
+- **MONGODB_URI** – MongoDB connection URL  
+- **ORIGINS** – Allowed origins for resource sharing (CORS), e.g. `link1, link2, link3`
 
 
