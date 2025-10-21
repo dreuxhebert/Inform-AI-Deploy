@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from fastapi import APIRouter, UploadFile, File, Form
+from fastapi import APIRouter, UploadFile, File, Form, BackgroundTasks
 
 from Controllers.ElevateController import (
     get_interaction_id_download_url,
@@ -7,7 +7,8 @@ from Controllers.ElevateController import (
     get_cx_summary,
     get_transcription_url,
     get_general_summary,
-    upload_audio
+    upload_audio,
+    QA_Analysis
 )
 
 class FileRequest(BaseModel):
@@ -47,7 +48,11 @@ async def audio_upload(
     dispatcher: str = Form(""),
     call_type: str = Form(""),
     language: str = Form(""),
-    notes: str = Form("")
+    notes: str = Form(""),
 ):
-    result = await upload_audio(audio_file, dispatcher, call_type, language, notes)
+    result =  await upload_audio(audio_file, dispatcher, call_type, language, notes)
     return result
+
+@router.get("/QA")
+def qa_analysis():
+    return QA_Analysis("90cbb64a-ef25-47b8-ad5e-852edd7075eb")

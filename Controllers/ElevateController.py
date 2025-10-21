@@ -6,6 +6,7 @@ import time
 import requests
 from fastapi import HTTPException, UploadFile, File, Form
 import aiofiles
+from helperClasses.CallAnalysis import Analysis
 
 api_token = os.getenv("ELEVATEAI_API_TOKEN")
 api_url = os.getenv("ELEVATEAI_BASE_URL")
@@ -262,3 +263,14 @@ async def upload_audio(
             os.remove(file_path)
         except Exception:
             pass
+
+
+def QA_Analysis(interaction_id: str):
+    result = {}
+    analysis = Analysis()
+    address_status = analysis.check_address(interaction_id)
+    callback_status = analysis.check_callback(interaction_id)
+    result["address_status"] = address_status
+    result["callback_status"] = callback_status
+    return result
+
