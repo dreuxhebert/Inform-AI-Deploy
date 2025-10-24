@@ -1,10 +1,10 @@
-from aiohttp.hdrs import ORIGIN
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import uvicorn
-from Routs.CallsRouts import router as CallsRouts
-from Routs.Elevate_API_Routs import router as ElevateAPIRouts
+from Routes.CallsRoutes import router as CallsRouts
+from Routes.Elevate_API_Routes import router as ElevateAPIRouts
+from Routes.questionSetRoutes import router as questionSetRouts
 import os
 
 load_dotenv()
@@ -12,6 +12,8 @@ load_dotenv()
 app = FastAPI()
 app.include_router(CallsRouts)
 app.include_router(ElevateAPIRouts)
+app.include_router(questionSetRouts)
+
 
 origins = os.getenv("ORIGINs").split(",")
 for origin in origins:

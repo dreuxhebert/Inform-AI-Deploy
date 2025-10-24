@@ -17,6 +17,7 @@ db = client["inform_qa"]
 # Collections
 dispatchers = db["dispatchers"]
 calls = db["calls"]
-transcripts = db["transcripts"]
 evaluations = db["evaluations"]
+questions = db["questionSet"]
+
 print("Database Connection successful")

@@ -270,6 +270,7 @@ def QA_Analysis(interaction_id: str):
     analysis = Analysis()
     address_status = analysis.check_address(interaction_id)
     callback_status = analysis.check_callback(interaction_id)
+    call_type = analysis.call_type(interaction_id)
     result["address_status"] = address_status
     result["callback_status"] = callback_status
     return result

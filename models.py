@@ -1,6 +1,6 @@
 # models.py
 from pydantic import BaseModel, Field
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime, timezone
 from bson import ObjectId
 from pydantic import GetJsonSchemaHandler
@@ -175,3 +175,14 @@ class CallSummary(BaseModel):
     class Config:
         allow_population_by_field_name = True
         json_encoders = {ObjectId: str}
+
+# ---------------------------
+# Call Summary according to Mongo DB
+# ---------------------------
+
+class questionset(BaseModel):
+    id: Optional[PyObjectId] = Field(default_factory=PyObjectId, alias="_id")
+    originalQuestion: Optional[str] = None
+    editedQuestion: Optional[str] = None
+    questionDescription: Optional[str] = None
+    type: List[str] = []
