@@ -3,6 +3,6 @@ An example of how the .env should look like
 
 ELEVATEAI_API_TOKEN = Elevate AI api token
 ELEVATEAI_BASE_URL = Elevate AI base url (https://api.elevateai.com/v1)
-HUGGINGFACE_TOKEN = hugging face api token
+HUGGINGFACE_T = hugging face api token
 MONGODB_URI = mongo db connection url
 ORIGINS = allowed origins for resource sharing (CORS)
