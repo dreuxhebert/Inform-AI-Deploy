@@ -221,6 +221,7 @@ async def upload_audio(
                 f"{api_url}/interactions/{interaction_id}/upload",
                 headers=headers,
                 files=files,
+                verify= False,
                 timeout=60,
             )
         if response.status_code != 200:

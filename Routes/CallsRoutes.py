@@ -13,7 +13,7 @@ router = APIRouter(prefix="/calls", tags=["Cards"])
 
 #Adds uploaded call to the database
 @router.post("/createCall")
-def create_call(call_data: CallSummary):
+def create_call_router(call_data: CallSummary):
     return create_call(call_data)
 
 

@@ -1,16 +1,18 @@
 from db_connect import calls
-from db_connect import db
 
 def serialize_call(call):
     call["_id"] = str(call["_id"])  # Convert ObjectId to string
     return call
 
 # Adds call to the database
-async def create_call(call_data: calls):
+def create_call(call_data):
     call = call_data.model_dump()
-    result = db["calls"].insert_one(call)
-    call["id"] = result.inserted_id
-    return {"message": "Call added successfully", "id": call["_id"]}
+    result = calls.insert_one(call)
+    call["_id"] = str(result.inserted_id)
+    return {
+        "message": "Call added successfully",
+        "id": str(result.inserted_id)  # 👈 convert here
+    }
 
 # Fetches all the calls from the database
 def get_all_calls():
